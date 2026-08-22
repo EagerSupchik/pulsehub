@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { Icon } from "../../icons";
 
@@ -33,13 +34,29 @@ export function Login({ error, onLogin }: Props) {
     <div className="login-page">
       <section className="login-story">
         <div className="story-brand">
-          <span className="brand-mark">P</span>pulse
+          <Image
+            className="brand-logo"
+            src="/favicon.svg"
+            width={42}
+            height={42}
+            alt=""
+            priority
+          />
+          pulse
         </div>
       </section>
       <section className="login-panel">
         <form onSubmit={submit}>
           <div className="mobile-brand">
-            <span className="brand-mark">P</span>pulse
+            <Image
+              className="brand-logo"
+              src="/favicon.svg"
+              width={38}
+              height={38}
+              alt=""
+              priority
+            />
+            pulse
           </div>
           <span className="eyebrow">Корпоративный доступ</span>
           <h2>Добро пожаловать</h2>

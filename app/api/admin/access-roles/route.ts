@@ -10,12 +10,22 @@ import {
 
 export async function GET(request: Request) {
   try {
+    const url = new URL(request.url);
     const context = await authorizeCapability(request, "roles.manage");
-    const [roles, members] = await Promise.all([
+    const [roles, memberDirectory] = await Promise.all([
       listAccessRoles(context.company.id),
-      listAssignableMembers(context.company.id),
+      listAssignableMembers(context.company.id, {
+        page: Number(url.searchParams.get("memberPage")) || 1,
+        pageSize: 25,
+        search: url.searchParams.get("memberSearch") ?? "",
+        roleId: url.searchParams.get("roleId"),
+      }),
     ]);
-    return Response.json({ roles, members });
+    return Response.json({
+      roles,
+      members: memberDirectory.members,
+      memberPagination: memberDirectory.pagination,
+    });
   } catch (error) {
     return handleRouteError(error);
   }

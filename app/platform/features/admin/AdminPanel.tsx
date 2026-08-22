@@ -16,13 +16,26 @@ type AccessRole = {
   name: string;
   description: string | null;
   permissions: string[];
-  assignedMembershipIds: string[];
+  assignedCount: number;
 };
 type AssignableMember = {
   membershipId: string;
   name: string;
   email: string;
   jobTitle: string | null;
+  assigned?: boolean;
+};
+type Pagination = {
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+};
+const emptyPagination: Pagination = {
+  page: 1,
+  pageSize: 25,
+  total: 0,
+  totalPages: 1,
 };
 type Department = { id: string; name: string };
 type CompanyAccount = {
@@ -133,6 +146,38 @@ function AdminHeading({ title }: { title: string }) {
   );
 }
 
+function PaginationControls({
+  pagination,
+  onPage,
+}: {
+  pagination: Pagination;
+  onPage: (page: number) => void;
+}) {
+  return (
+    <nav className="admin-pagination" aria-label="Навигация по страницам">
+      <button
+        type="button"
+        disabled={pagination.page <= 1}
+        onClick={() => onPage(Math.max(1, pagination.page - 1))}
+      >
+        Назад
+      </button>
+      <span>
+        {pagination.page} из {pagination.totalPages}
+      </span>
+      <button
+        type="button"
+        disabled={pagination.page >= pagination.totalPages}
+        onClick={() =>
+          onPage(Math.min(pagination.totalPages, pagination.page + 1))
+        }
+      >
+        Далее
+      </button>
+    </nav>
+  );
+}
+
 function Toggle({
   checked,
   onChange,
@@ -174,6 +219,17 @@ function RolesPanel({ notify }: { notify: Notify }) {
   const [roles, setRoles] = useState<AccessRole[]>([]);
   const [members, setMembers] = useState<AssignableMember[]>([]);
   const [accounts, setAccounts] = useState<CompanyAccount[]>([]);
+  const [accountPage, setAccountPage] = useState(1);
+  const [accountSearch, setAccountSearch] = useState("");
+  const [accountQuery, setAccountQuery] = useState("");
+  const [accountStatus, setAccountStatus] = useState("");
+  const [accountPagination, setAccountPagination] =
+    useState<Pagination>(emptyPagination);
+  const [memberPage, setMemberPage] = useState(1);
+  const [memberSearch, setMemberSearch] = useState("");
+  const [memberQuery, setMemberQuery] = useState("");
+  const [memberPagination, setMemberPagination] =
+    useState<Pagination>(emptyPagination);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [departmentName, setDepartmentName] = useState("");
   const [departmentBusy, setDepartmentBusy] = useState(false);
@@ -199,19 +255,50 @@ function RolesPanel({ notify }: { notify: Notify }) {
     email: string;
     password: string;
   } | null>(null);
+  const editingRoleId = editing?.id ?? "";
   const load = useCallback(async () => {
+    const roleParameters = new URLSearchParams({
+      memberPage: String(memberPage),
+    });
+    if (memberQuery) roleParameters.set("memberSearch", memberQuery);
+    if (editingRoleId) roleParameters.set("roleId", editingRoleId);
+    const accountParameters = new URLSearchParams({
+      page: String(accountPage),
+    });
+    if (accountQuery) accountParameters.set("search", accountQuery);
+    if (accountStatus) accountParameters.set("status", accountStatus);
     const [accessData, accountData, departmentData] = await Promise.all([
-      api<{ roles: AccessRole[]; members: AssignableMember[] }>(
-        "/api/admin/access-roles",
+      api<{
+        roles: AccessRole[];
+        members: AssignableMember[];
+        memberPagination: Pagination;
+      }>(
+        `/api/admin/access-roles?${roleParameters}`,
       ),
-      api<{ employees: CompanyAccount[] }>("/api/admin/users"),
+      api<{ employees: CompanyAccount[]; pagination: Pagination }>(
+        `/api/admin/users?${accountParameters}`,
+      ),
       api<{ departments: Department[] }>("/api/admin/departments"),
     ]);
     setRoles(accessData.roles);
     setMembers(accessData.members);
+    setMemberPagination(accessData.memberPagination);
+    setSelectedMembers(
+      accessData.members
+        .filter((member) => member.assigned)
+        .map((member) => member.membershipId),
+    );
     setAccounts(accountData.employees);
+    setAccountPagination(accountData.pagination);
     setDepartments(departmentData.departments);
-  }, []);
+  }, [
+    accountPage,
+    accountQuery,
+    accountStatus,
+    editingRoleId,
+    memberPage,
+    memberQuery,
+  ]);
   useEffect(() => {
     const timer = window.setTimeout(
       () => void load().catch((e) => setError(e.message)),
@@ -219,6 +306,20 @@ function RolesPanel({ notify }: { notify: Notify }) {
     );
     return () => window.clearTimeout(timer);
   }, [load]);
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setAccountPage(1);
+      setAccountQuery(accountSearch.trim());
+    }, 350);
+    return () => window.clearTimeout(timer);
+  }, [accountSearch]);
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setMemberPage(1);
+      setMemberQuery(memberSearch.trim());
+    }, 350);
+    return () => window.clearTimeout(timer);
+  }, [memberSearch]);
   const reset = () => {
     setEditing(null);
     setName("");
@@ -231,14 +332,17 @@ function RolesPanel({ notify }: { notify: Notify }) {
     setName(role.name);
     setDescription(role.description ?? "");
     setSelected(role.permissions);
-    setSelectedMembers(role.assignedMembershipIds);
+    setSelectedMembers([]);
+    setMemberPage(1);
+    setMemberSearch("");
+    setMemberQuery("");
   };
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     setBusy(true);
     setError("");
     try {
-      const result = await api<{ role: AccessRole }>(
+      await api<{ role: AccessRole }>(
         editing
           ? `/api/admin/access-roles/${editing.id}`
           : "/api/admin/access-roles",
@@ -251,20 +355,6 @@ function RolesPanel({ notify }: { notify: Notify }) {
           }),
         },
       );
-      const roleId = editing?.id ?? result.role.id;
-      const previous = new Set(editing?.assignedMembershipIds ?? []);
-      for (const membershipId of selectedMembers)
-        if (!previous.has(membershipId))
-          await api(`/api/admin/access-roles/${roleId}/assignments`, {
-            method: "POST",
-            body: JSON.stringify({ membershipId }),
-          });
-      for (const membershipId of previous)
-        if (!selectedMembers.includes(membershipId))
-          await api(
-            `/api/admin/access-roles/${roleId}/assignments/${membershipId}`,
-            { method: "DELETE" },
-          );
       await load();
       reset();
       notify(editing ? "Роль обновлена" : "Роль создана");
@@ -282,6 +372,57 @@ function RolesPanel({ notify }: { notify: Notify }) {
       notify("Роль удалена");
     } catch (e) {
       setError((e as Error).message);
+    }
+  };
+  const toggleRoleMember = async (
+    member: AssignableMember,
+    checked: boolean,
+  ) => {
+    if (!editing) return;
+    setError("");
+    try {
+      await api(
+        checked
+          ? `/api/admin/access-roles/${editing.id}/assignments`
+          : `/api/admin/access-roles/${editing.id}/assignments/${member.membershipId}`,
+        checked
+          ? {
+              method: "POST",
+              body: JSON.stringify({ membershipId: member.membershipId }),
+            }
+          : { method: "DELETE" },
+      );
+      setSelectedMembers((values) =>
+        checked
+          ? [...new Set([...values, member.membershipId])]
+          : values.filter((item) => item !== member.membershipId),
+      );
+      setRoles((values) =>
+        values.map((role) =>
+          role.id === editing.id
+            ? {
+                ...role,
+                assignedCount: Math.max(
+                  0,
+                  role.assignedCount + (checked ? 1 : -1),
+                ),
+              }
+            : role,
+        ),
+      );
+      setEditing((current) =>
+        current
+          ? {
+              ...current,
+              assignedCount: Math.max(
+                0,
+                current.assignedCount + (checked ? 1 : -1),
+              ),
+            }
+          : current,
+      );
+    } catch (cause) {
+      setError((cause as Error).message);
     }
   };
   const createAccount = async (event: FormEvent) => {
@@ -384,7 +525,7 @@ function RolesPanel({ notify }: { notify: Notify }) {
   const copyCredentials = async () => {
     if (!createdCredentials) return;
     await navigator.clipboard.writeText(
-      `PulseHub\nЛогин: ${createdCredentials.email}\nВременный пароль: ${createdCredentials.password}`,
+      `PulseHub\nЛогин: ${createdCredentials.email}\nПароль: ${createdCredentials.password}`,
     );
     notify("Данные для входа скопированы");
   };
@@ -403,7 +544,7 @@ function RolesPanel({ notify }: { notify: Notify }) {
           <code>
             Логин: {createdCredentials.email}
             <br />
-            Временный пароль: {createdCredentials.password}
+            Пароль: {createdCredentials.password}
           </code>
           <button type="button" onClick={() => void copyCredentials()}>
             Копировать
@@ -448,7 +589,29 @@ function RolesPanel({ notify }: { notify: Notify }) {
               <h2>Учётные записи</h2>
               <p>Доступ блокируется без удаления истории задач и начислений.</p>
             </div>
-            <span className="count-badge">{accounts.length}</span>
+            <span className="count-badge">{accountPagination.total}</span>
+          </div>
+          <div className="directory-toolbar">
+            <label>
+              <Icon name="search" />
+              <input
+                type="search"
+                value={accountSearch}
+                onChange={(event) => setAccountSearch(event.target.value)}
+                placeholder="Имя, почта или должность"
+              />
+            </label>
+            <select
+              value={accountStatus}
+              onChange={(event) => {
+                setAccountStatus(event.target.value);
+                setAccountPage(1);
+              }}
+            >
+              <option value="">Все статусы</option>
+              <option value="active">Активные</option>
+              <option value="suspended">Заблокированные</option>
+            </select>
           </div>
           <div className="account-list">
             {accounts.map((account) => (
@@ -504,6 +667,12 @@ function RolesPanel({ notify }: { notify: Notify }) {
               </article>
             ))}
           </div>
+          {accountPagination.totalPages > 1 && (
+            <PaginationControls
+              pagination={accountPagination}
+              onPage={setAccountPage}
+            />
+          )}
         </section>
         <form className="admin-card admin-form" onSubmit={createAccount}>
           <div className="admin-card-head">
@@ -588,7 +757,7 @@ function RolesPanel({ notify }: { notify: Notify }) {
             </select>
           </label>
           <label>
-            Временный пароль
+            Пароль
             <div className="password-admin-field">
               <input
                 minLength={10}
@@ -707,36 +876,52 @@ function RolesPanel({ notify }: { notify: Notify }) {
               </label>
             ))}
           </fieldset>
-          <fieldset>
-            <legend>Кому назначить</legend>
-            {members.length ? (
-              members.map((member) => (
-                <label className="permission-option" key={member.membershipId}>
+          {editing && (
+            <fieldset>
+              <legend>
+                Назначения · {editing.assignedCount} сотрудников
+              </legend>
+              <div className="directory-toolbar compact">
+                <label>
+                  <Icon name="search" />
                   <input
-                    type="checkbox"
-                    checked={selectedMembers.includes(member.membershipId)}
-                    onChange={(e) =>
-                      setSelectedMembers((values) =>
-                        e.target.checked
-                          ? [...values, member.membershipId]
-                          : values.filter(
-                              (item) => item !== member.membershipId,
-                            ),
-                      )
-                    }
+                    type="search"
+                    value={memberSearch}
+                    onChange={(event) => setMemberSearch(event.target.value)}
+                    placeholder="Найти сотрудника"
                   />
-                  <span>
-                    <b>{member.name}</b>
-                    <small>{member.jobTitle || member.email}</small>
-                  </span>
                 </label>
-              ))
-            ) : (
-              <p className="form-empty-note">
-                Нет сотрудников, которым можно назначить роль.
-              </p>
-            )}
-          </fieldset>
+              </div>
+              {members.length ? (
+                members.map((member) => (
+                  <label
+                    className="permission-option"
+                    key={member.membershipId}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedMembers.includes(member.membershipId)}
+                      onChange={(event) =>
+                        void toggleRoleMember(member, event.target.checked)
+                      }
+                    />
+                    <span>
+                      <b>{member.name}</b>
+                      <small>{member.jobTitle || member.email}</small>
+                    </span>
+                  </label>
+                ))
+              ) : (
+                <p className="form-empty-note">Сотрудники не найдены.</p>
+              )}
+              {memberPagination.totalPages > 1 && (
+                <PaginationControls
+                  pagination={memberPagination}
+                  onPage={setMemberPage}
+                />
+              )}
+            </fieldset>
+          )}
           <div className="form-actions">
             {editing && (
               <button type="button" className="secondary" onClick={reset}>
@@ -756,6 +941,11 @@ function RolesPanel({ notify }: { notify: Notify }) {
 function CrmPanel({ notify }: { notify: Notify }) {
   const [items, setItems] = useState<Integration[]>([]);
   const [accounts, setAccounts] = useState<AssignableMember[]>([]);
+  const [accountPage, setAccountPage] = useState(1);
+  const [accountSearch, setAccountSearch] = useState("");
+  const [accountQuery, setAccountQuery] = useState("");
+  const [accountPagination, setAccountPagination] =
+    useState<Pagination>(emptyPagination);
   const [provider, setProvider] = useState("test-crm");
   const [name, setName] = useState("");
   const [baseUrl, setBaseUrl] = useState("");
@@ -773,19 +963,32 @@ function CrmPanel({ notify }: { notify: Notify }) {
       membershipId: string;
       externalUserId: string;
       externalEmail: string | null;
+      employeeName: string;
+      employeeEmail: string;
     }>
   >([]);
+  const [mappingPage, setMappingPage] = useState(1);
+  const [mappingSearch, setMappingSearch] = useState("");
+  const [mappingQuery, setMappingQuery] = useState("");
+  const [mappingPagination, setMappingPagination] =
+    useState<Pagination>(emptyPagination);
   const load = useCallback(async () => {
+    const parameters = new URLSearchParams({
+      memberPage: String(accountPage),
+    });
+    if (accountQuery) parameters.set("memberSearch", accountQuery);
     const data = await api<{
       integrations: Integration[];
       members: AssignableMember[];
-    }>("/api/admin/crm-integrations");
+      memberPagination: Pagination;
+    }>(`/api/admin/crm-integrations?${parameters}`);
     setItems(data.integrations);
     setAccounts(data.members);
+    setAccountPagination(data.memberPagination);
     setMappingIntegration(
       (current) => current || data.integrations[0]?.id || "",
     );
-  }, []);
+  }, [accountPage, accountQuery]);
   useEffect(() => {
     const timer = window.setTimeout(
       () => void load().catch((e) => setError(e.message)),
@@ -794,13 +997,35 @@ function CrmPanel({ notify }: { notify: Notify }) {
     return () => window.clearTimeout(timer);
   }, [load]);
   useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setAccountPage(1);
+      setAccountQuery(accountSearch.trim());
+      setMappingMember("");
+    }, 350);
+    return () => window.clearTimeout(timer);
+  }, [accountSearch]);
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setMappingPage(1);
+      setMappingQuery(mappingSearch.trim());
+    }, 350);
+    return () => window.clearTimeout(timer);
+  }, [mappingSearch]);
+  useEffect(() => {
     if (!mappingIntegration) return;
-    void api<{ mappings: typeof mappings }>(
-      `/api/admin/crm-integrations/${mappingIntegration}/mappings`,
+    const parameters = new URLSearchParams({
+      page: String(mappingPage),
+    });
+    if (mappingQuery) parameters.set("search", mappingQuery);
+    void api<{ mappings: typeof mappings; pagination: Pagination }>(
+      `/api/admin/crm-integrations/${mappingIntegration}/mappings?${parameters}`,
     )
-      .then((data) => setMappings(data.mappings))
+      .then((data) => {
+        setMappings(data.mappings);
+        setMappingPagination(data.pagination);
+      })
       .catch((e) => setError(e.message));
-  }, [mappingIntegration]);
+  }, [mappingIntegration, mappingPage, mappingQuery]);
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     setError("");
@@ -875,10 +1100,18 @@ function CrmPanel({ notify }: { notify: Notify }) {
           externalEmail: externalEmail || null,
         }),
       });
-      const data = await api<{ mappings: typeof mappings }>(
-        `/api/admin/crm-integrations/${mappingIntegration}/mappings`,
+      const data = await api<{
+        mappings: typeof mappings;
+        pagination: Pagination;
+      }>(
+        `/api/admin/crm-integrations/${mappingIntegration}/mappings?page=1`,
       );
       setMappings(data.mappings);
+      setMappingPagination(data.pagination);
+      setMappingPage(1);
+      setMappingSearch("");
+      setMappingQuery("");
+      setMappingMember("");
       setExternalUserId("");
       setExternalEmail("");
       notify("Пользователь CRM сопоставлен");
@@ -956,9 +1189,8 @@ function CrmPanel({ notify }: { notify: Notify }) {
               value={provider}
               onChange={(e) => setProvider(e.target.value)}
             >
-              <option value="test-crm">Локальная тестовая CRM</option>
               <option value="amocrm">amoCRM</option>
-              <option value="custom">Другая CRM / Custom API</option>
+              <option value="custom">Другая CRM / Кастомная API</option>
             </select>
           </label>
           <label>
@@ -1024,7 +1256,21 @@ function CrmPanel({ notify }: { notify: Notify }) {
             <h2>Сопоставление пользователей</h2>
             <p>Свяжите сотрудника PulseHub с ID пользователя во внешней CRM.</p>
           </div>
-          <span className="count-badge">{mappings.length}</span>
+          <span className="count-badge">{mappingPagination.total}</span>
+        </div>
+        <div className="directory-toolbar">
+          <label>
+            <Icon name="search" />
+            <input
+              type="search"
+              value={accountSearch}
+              onChange={(event) => setAccountSearch(event.target.value)}
+              placeholder="Найти сотрудника для сопоставления"
+            />
+          </label>
+          <span className="directory-counter">
+            {accountPagination.total} сотрудников
+          </span>
         </div>
         <form className="mapping-form" onSubmit={createMapping}>
           <label>
@@ -1032,7 +1278,10 @@ function CrmPanel({ notify }: { notify: Notify }) {
             <select
               required
               value={mappingIntegration}
-              onChange={(e) => setMappingIntegration(e.target.value)}
+              onChange={(e) => {
+                setMappingIntegration(e.target.value);
+                setMappingPage(1);
+              }}
             >
               <option value="">Выберите подключение</option>
               {items.map((item) => (
@@ -1082,18 +1331,40 @@ function CrmPanel({ notify }: { notify: Notify }) {
             Сопоставить
           </button>
         </form>
+        {accountPagination.totalPages > 1 && (
+          <PaginationControls
+            pagination={accountPagination}
+            onPage={(value) => {
+              setAccountPage(value);
+              setMappingMember("");
+            }}
+          />
+        )}
+        <div className="directory-toolbar mapping-directory-toolbar">
+          <label>
+            <Icon name="search" />
+            <input
+              type="search"
+              value={mappingSearch}
+              onChange={(event) => setMappingSearch(event.target.value)}
+              placeholder="Поиск среди сопоставлений"
+            />
+          </label>
+        </div>
         <div className="mapping-list">
           {mappings.map((mapping) => (
             <span key={mapping.id}>
-              <b>
-                {accounts.find(
-                  (account) => account.membershipId === mapping.membershipId,
-                )?.name || "Сотрудник"}
-              </b>
+              <b>{mapping.employeeName}</b>
               <code>{mapping.externalUserId}</code>
             </span>
           ))}
         </div>
+        {mappingPagination.totalPages > 1 && (
+          <PaginationControls
+            pagination={mappingPagination}
+            onPage={setMappingPage}
+          />
+        )}
       </section>
     </div>
   );

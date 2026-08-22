@@ -15,6 +15,15 @@ type ActivityRow = {
   lastActiveAt: Date | string | null;
 };
 
+type ActivityFilters = {
+  departmentId?: string | null;
+  level?: "green" | "yellow" | "red" | "unrated";
+  search?: string;
+  page?: number;
+  pageSize?: number;
+  exportAll?: boolean;
+};
+
 function insight(
   score: number,
   delta: number,
@@ -36,7 +45,8 @@ function insight(
 
 export async function getActivityTracking(
   companyId: string,
-  departmentId?: string | null,
+  departmentScopeId?: string | null,
+  filters: ActivityFilters = {},
 ) {
   const db = getDb();
   const [settings] = await db
@@ -45,8 +55,8 @@ export async function getActivityTracking(
     .where(eq(activitySettings.companyId, companyId))
     .limit(1);
   const thresholds = settings ?? { greenMinimum: 400, yellowMinimum: 150 };
-  const departmentScope = departmentId
-    ? sql`and d.id = ${departmentId}`
+  const departmentScope = departmentScopeId
+    ? sql`and d.id = ${departmentScopeId}`
     : sql``;
   const result = await db.execute<ActivityRow>(sql`
     with bounds as (
@@ -166,6 +176,32 @@ export async function getActivityTracking(
     departments.set(employee.departmentId, department);
   }
 
+  const departmentItems = [...departments.values()];
+  const selectedDepartmentId =
+    filters.departmentId ?? departmentItems[0]?.id ?? null;
+  const selectedLevel = filters.level ?? "unrated";
+  const normalizedSearch = filters.search
+    ?.trim()
+    .toLocaleLowerCase("ru-RU");
+  const matchingEmployees = employees.filter(
+    (employee) =>
+      employee.departmentId === selectedDepartmentId &&
+      employee.level === selectedLevel &&
+      (!normalizedSearch ||
+        employee.name.toLocaleLowerCase("ru-RU").includes(normalizedSearch) ||
+        employee.position
+          .toLocaleLowerCase("ru-RU")
+          .includes(normalizedSearch)),
+  );
+  const pageSize = filters.exportAll
+    ? Math.min(matchingEmployees.length || 1, 5_000)
+    : Math.min(Math.max(filters.pageSize ?? 25, 1), 100);
+  const totalPages = Math.max(1, Math.ceil(matchingEmployees.length / pageSize));
+  const page = Math.min(Math.max(filters.page ?? 1, 1), totalPages);
+  const pageEmployees = filters.exportAll
+    ? matchingEmployees.slice(0, pageSize)
+    : matchingEmployees.slice((page - 1) * pageSize, page * pageSize);
+
   return {
     periodDays: 7,
     periodStart: new Date(
@@ -182,7 +218,7 @@ export async function getActivityTracking(
       greenMinimum: thresholds.greenMinimum,
       yellowMinimum: thresholds.yellowMinimum,
     },
-    departments: [...departments.values()].map(
+    departments: departmentItems.map(
       ({ total, previous, rated, ...department }) => ({
         ...department,
         average: rated ? Math.round(total / rated) : 0,
@@ -194,7 +230,13 @@ export async function getActivityTracking(
               : 0,
       }),
     ),
-    employees,
+    employees: pageEmployees,
+    pagination: {
+      page,
+      pageSize,
+      total: matchingEmployees.length,
+      totalPages,
+    },
   };
 }
 

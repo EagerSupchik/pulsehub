@@ -117,6 +117,12 @@ export interface ActivityTrackingResponse {
   thresholds: { greenMinimum: number; yellowMinimum: number };
   departments: Department[];
   employees: Employee[];
+  pagination: {
+    page: number;
+    pageSize: number;
+    total: number;
+    totalPages: number;
+  };
 }
 
 export interface Department {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Icon } from "../../icons";
 import type {
   ActivityLevel,
@@ -40,6 +40,10 @@ export function ActivityTrackingPage({
   const [data, setData] = useState<ActivityTrackingResponse | null>(null);
   const [departmentId, setDepartmentId] = useState("");
   const [level, setLevel] = useState<ActivityLevel>("unrated");
+  const [search, setSearch] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<Employee | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [thresholds, setThresholds] = useState({
@@ -56,8 +60,19 @@ export function ActivityTrackingPage({
     capabilities.includes("activity.settings.manage");
 
   const load = useCallback(async () => {
+    setLoading(true);
+    setError("");
     try {
-      const response = await fetch("/api/activity", { credentials: "include" });
+      const parameters = new URLSearchParams({
+        level,
+        page: String(page),
+        pageSize: "25",
+      });
+      if (departmentId) parameters.set("departmentId", departmentId);
+      if (searchQuery) parameters.set("search", searchQuery);
+      const response = await fetch(`/api/activity?${parameters}`, {
+        credentials: "include",
+      });
       if (!response.ok) throw new Error();
       const payload = (await response.json()) as ActivityTrackingResponse;
       setData(payload);
@@ -69,27 +84,44 @@ export function ActivityTrackingPage({
       );
     } catch {
       setError("Не удалось загрузить данные активности");
+    } finally {
+      setLoading(false);
     }
-  }, []);
+  }, [departmentId, level, page, searchQuery]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => void load(), 0);
     return () => window.clearTimeout(timer);
   }, [load]);
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setPage(1);
+      setSearchQuery(search.trim());
+    }, 350);
+    return () => window.clearTimeout(timer);
+  }, [search]);
   const department =
     data?.departments.find((item) => item.id === departmentId) ??
     data?.departments[0];
-  const staff = useMemo(
-    () =>
-      data?.employees.filter(
-        (employee) =>
-          employee.departmentId === department?.id && employee.level === level,
-      ) ?? [],
-    [data, department?.id, level],
-  );
+  const staff = data?.employees ?? [];
 
-  const exportReport = () => {
+  const exportReport = async () => {
     if (!data) return;
+    const parameters = new URLSearchParams({
+      level,
+      export: "1",
+    });
+    if (departmentId) parameters.set("departmentId", departmentId);
+    if (searchQuery) parameters.set("search", searchQuery);
+    const response = await fetch(`/api/activity?${parameters}`, {
+      credentials: "include",
+    });
+    if (!response.ok) {
+      setError("Не удалось подготовить отчёт");
+      return;
+    }
+    const reportData =
+      (await response.json()) as ActivityTrackingResponse;
     const rows = [
       [
         "Отдел",
@@ -101,8 +133,8 @@ export function ActivityTrackingPage({
         "Завершено задач",
         "Последняя синхронизация",
       ],
-      ...data.employees.map((employee) => {
-        const dept = data.departments.find(
+      ...reportData.employees.map((employee) => {
+        const dept = reportData.departments.find(
           (item) => item.id === employee.departmentId,
         );
         return [
@@ -206,7 +238,10 @@ export function ActivityTrackingPage({
             Индекс рассчитан по задачам, завершение которых подтверждено CRM.
           </p>
         </div>
-        <button className="secondary" onClick={exportReport}>
+        <button
+          className="secondary"
+          onClick={() => void exportReport()}
+        >
           Экспорт отчёта
         </button>
       </div>
@@ -220,7 +255,10 @@ export function ActivityTrackingPage({
             <button
               className={item.id === department.id ? "active" : ""}
               key={item.id}
-              onClick={() => setDepartmentId(item.id)}
+              onClick={() => {
+                setDepartmentId(item.id);
+                setPage(1);
+              }}
             >
               <span className="dept-letter">{item.name.charAt(0)}</span>
               <span>
@@ -257,7 +295,10 @@ export function ActivityTrackingPage({
               <button
                 key={item}
                 className={`${item} ${level === item ? "active" : ""}`}
-                onClick={() => setLevel(item)}
+                onClick={() => {
+                  setLevel(item);
+                  setPage(1);
+                }}
               >
                 <i />
                 <strong>{department.counts[item]}</strong>
@@ -282,11 +323,26 @@ export function ActivityTrackingPage({
                   CRM-задачах.
                 </p>
               </div>
-              <span className={`level-chip ${level}`}>
-                {staff.length} найдено
-              </span>
+              <div className="employee-list-tools">
+                <label className="employee-search">
+                  <Icon name="search" />
+                  <input
+                    type="search"
+                    value={search}
+                    onChange={(event) => setSearch(event.target.value)}
+                    placeholder="Найти сотрудника"
+                  />
+                </label>
+                <span className={`level-chip ${level}`}>
+                  {data.pagination.total} найдено
+                </span>
+              </div>
             </div>
-            {staff.length ? (
+            {loading ? (
+              <div className="empty-state">
+                <p>Загружаем сотрудников…</p>
+              </div>
+            ) : staff.length ? (
               staff.map((employee) => (
                 <article className="employee-row" key={employee.id}>
                   <span className="avatar">{employee.initials}</span>
@@ -331,6 +387,35 @@ export function ActivityTrackingPage({
                   Категория обновится при следующем недельном расчёте.
                 </p>
               </div>
+            )}
+            {data.pagination.totalPages > 1 && (
+              <nav className="employee-pagination" aria-label="Страницы сотрудников">
+                <button
+                  type="button"
+                  disabled={data.pagination.page <= 1 || loading}
+                  onClick={() => setPage((value) => Math.max(1, value - 1))}
+                >
+                  Назад
+                </button>
+                <span>
+                  Страница {data.pagination.page} из{" "}
+                  {data.pagination.totalPages}
+                </span>
+                <button
+                  type="button"
+                  disabled={
+                    data.pagination.page >= data.pagination.totalPages ||
+                    loading
+                  }
+                  onClick={() =>
+                    setPage((value) =>
+                      Math.min(data.pagination.totalPages, value + 1),
+                    )
+                  }
+                >
+                  Далее
+                </button>
+              </nav>
             )}
           </div>
         </section>

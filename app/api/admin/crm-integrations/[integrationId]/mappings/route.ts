@@ -12,11 +12,16 @@ export async function GET(
   { params }: { params: Promise<{ integrationId: string }> },
 ) {
   try {
+    const url = new URL(request.url);
     const context = await authorizeCapability(request, "crm.manage");
     const { integrationId } = await params;
-    return Response.json({
-      mappings: await listCrmUserMappings(context.company.id, integrationId),
-    });
+    return Response.json(
+      await listCrmUserMappings(context.company.id, integrationId, {
+        page: Number(url.searchParams.get("page")) || 1,
+        pageSize: 25,
+        search: url.searchParams.get("search") ?? "",
+      }),
+    );
   } catch (error) {
     return handleRouteError(error);
   }

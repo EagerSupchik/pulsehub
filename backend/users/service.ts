@@ -1,4 +1,4 @@
-import { and, asc, count, eq } from "drizzle-orm";
+import { and, asc, count, eq, ilike, or, sql } from "drizzle-orm";
 import { hashPassword } from "better-auth/crypto";
 import { writeAuditLog } from "@/backend/audit/log";
 import { getDb } from "@/db";
@@ -40,8 +40,44 @@ export async function assertDepartmentInCompany(
   }
 }
 
-export async function listCompanyEmployees(companyId: string) {
-  return getDb()
+export async function listCompanyEmployees(
+  companyId: string,
+  options: {
+    page?: number;
+    pageSize?: number;
+    search?: string;
+    status?: "active" | "suspended";
+  } = {},
+) {
+  const db = getDb();
+  const pageSize = Math.min(Math.max(options.pageSize ?? 25, 1), 100);
+  const search = options.search?.trim().slice(0, 100) ?? "";
+  const filter = and(
+    eq(companyMemberships.companyId, companyId),
+    options.status
+      ? eq(companyMemberships.status, options.status)
+      : sql<boolean>`true`,
+    search
+      ? or(
+          ilike(users.name, `%${search}%`),
+          ilike(users.email, `%${search}%`),
+          ilike(employeeProfiles.jobTitle, `%${search}%`),
+        )
+      : sql<boolean>`true`,
+  );
+  const [totalRow] = await db
+    .select({ total: count() })
+    .from(companyMemberships)
+    .innerJoin(users, eq(companyMemberships.userId, users.id))
+    .leftJoin(
+      employeeProfiles,
+      eq(employeeProfiles.membershipId, companyMemberships.id),
+    )
+    .where(filter);
+  const total = Number(totalRow?.total ?? 0);
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const page = Math.min(Math.max(options.page ?? 1, 1), totalPages);
+  const employees = await db
     .select({
       membershipId: companyMemberships.id,
       userId: users.id,
@@ -62,8 +98,14 @@ export async function listCompanyEmployees(companyId: string) {
       eq(employeeProfiles.membershipId, companyMemberships.id),
     )
     .leftJoin(departments, eq(employeeProfiles.departmentId, departments.id))
-    .where(eq(companyMemberships.companyId, companyId))
-    .orderBy(asc(users.name));
+    .where(filter)
+    .orderBy(asc(users.name))
+    .limit(pageSize)
+    .offset((page - 1) * pageSize);
+  return {
+    employees,
+    pagination: { page, pageSize, total, totalPages },
+  };
 }
 
 export async function createCompanyEmployee(

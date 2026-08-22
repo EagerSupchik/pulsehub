@@ -1,5 +1,15 @@
 import { createHash, randomBytes } from "node:crypto";
-import { and, desc, eq, isNull, sql } from "drizzle-orm";
+import {
+  and,
+  asc,
+  count,
+  desc,
+  eq,
+  ilike,
+  isNull,
+  or,
+  sql,
+} from "drizzle-orm";
 import { getDb } from "@/db";
 import {
   companyMemberships,
@@ -9,6 +19,7 @@ import {
   pointLedger,
   tasks,
   taskStatusHistory,
+  users,
 } from "@/db/schema";
 import { z } from "zod";
 import { crmSyncSchema } from "./schemas";
@@ -204,8 +215,10 @@ export async function createCrmUserMapping(
 export async function listCrmUserMappings(
   companyId: string,
   integrationId: string,
+  options: { page?: number; pageSize?: number; search?: string } = {},
 ) {
-  const [integration] = await getDb()
+  const db = getDb();
+  const [integration] = await db
     .select({ id: crmIntegrations.id })
     .from(crmIntegrations)
     .where(
@@ -226,15 +239,53 @@ export async function listCrmUserMappings(
       },
       { status: 404 },
     );
-  return getDb()
+  const pageSize = Math.min(Math.max(options.pageSize ?? 25, 1), 100);
+  const search = options.search?.trim().slice(0, 100) ?? "";
+  const filter = and(
+    eq(crmUserMappings.integrationId, integrationId),
+    search
+      ? or(
+          ilike(users.name, `%${search}%`),
+          ilike(users.email, `%${search}%`),
+          ilike(crmUserMappings.externalUserId, `%${search}%`),
+        )
+      : sql<boolean>`true`,
+  );
+  const [totalRow] = await db
+    .select({ total: count() })
+    .from(crmUserMappings)
+    .innerJoin(
+      companyMemberships,
+      eq(crmUserMappings.membershipId, companyMemberships.id),
+    )
+    .innerJoin(users, eq(companyMemberships.userId, users.id))
+    .where(filter);
+  const total = Number(totalRow?.total ?? 0);
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const page = Math.min(Math.max(options.page ?? 1, 1), totalPages);
+  const mappings = await db
     .select({
       id: crmUserMappings.id,
       membershipId: crmUserMappings.membershipId,
       externalUserId: crmUserMappings.externalUserId,
       externalEmail: crmUserMappings.externalEmail,
+      employeeName: users.name,
+      employeeEmail: users.email,
     })
     .from(crmUserMappings)
-    .where(eq(crmUserMappings.integrationId, integrationId));
+    .innerJoin(
+      companyMemberships,
+      eq(crmUserMappings.membershipId, companyMemberships.id),
+    )
+    .innerJoin(users, eq(companyMemberships.userId, users.id))
+    .where(filter)
+    .orderBy(asc(users.name))
+    .limit(pageSize)
+    .offset((page - 1) * pageSize);
+  return {
+    mappings,
+    pagination: { page, pageSize, total, totalPages },
+  };
 }
 
 export async function listMemberTasks(companyId: string, membershipId: string) {

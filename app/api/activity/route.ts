@@ -11,6 +11,7 @@ import { getAssignedPermissions } from "@/backend/admin/service";
 
 export async function GET(request: Request) {
   try {
+    const url = new URL(request.url);
     const baseContext = await requireTenantContext(request);
     const context =
       baseContext.membership.role === "manager"
@@ -30,9 +31,28 @@ export async function GET(request: Request) {
         "Для руководителя не указан отдел",
       );
     }
-    const departmentId = canReadCompany ? null : context.profile?.departmentId;
+    const departmentScopeId = canReadCompany
+      ? null
+      : context.profile?.departmentId;
+    const requestedDepartmentId = url.searchParams.get("departmentId");
+    const requestedLevel = url.searchParams.get("level");
+    const levels = ["green", "yellow", "red", "unrated"] as const;
+    const level = levels.find((item) => item === requestedLevel) ?? "unrated";
+    const positiveInteger = (value: string | null, fallback: number) => {
+      const parsed = Number(value);
+      return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
+    };
     return Response.json(
-      await getActivityTracking(context.company.id, departmentId),
+      await getActivityTracking(context.company.id, departmentScopeId, {
+        departmentId: canReadCompany
+          ? requestedDepartmentId
+          : departmentScopeId,
+        level,
+        search: url.searchParams.get("search")?.slice(0, 100) ?? "",
+        page: positiveInteger(url.searchParams.get("page"), 1),
+        pageSize: positiveInteger(url.searchParams.get("pageSize"), 25),
+        exportAll: url.searchParams.get("export") === "1",
+      }),
     );
   } catch (error) {
     return handleRouteError(error);

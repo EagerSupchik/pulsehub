@@ -9,10 +9,20 @@ import {
 
 export async function GET(request: Request) {
   try {
+    const url = new URL(request.url);
     const context = await authorizeCapability(request, "users.manage");
-    return Response.json({
-      employees: await listCompanyEmployees(context.company.id),
-    });
+    const requestedStatus = url.searchParams.get("status");
+    return Response.json(
+      await listCompanyEmployees(context.company.id, {
+        page: Number(url.searchParams.get("page")) || 1,
+        pageSize: 25,
+        search: url.searchParams.get("search") ?? "",
+        status:
+          requestedStatus === "active" || requestedStatus === "suspended"
+            ? requestedStatus
+            : undefined,
+      }),
+    );
   } catch (error) {
     return handleRouteError(error);
   }

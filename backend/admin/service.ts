@@ -1,4 +1,14 @@
-import { and, asc, count, desc, eq, inArray } from "drizzle-orm";
+import {
+  and,
+  asc,
+  count,
+  desc,
+  eq,
+  ilike,
+  inArray,
+  or,
+  sql,
+} from "drizzle-orm";
 import { getDb } from "@/db";
 import {
   accessRoles,
@@ -26,21 +36,59 @@ export async function listAccessRoles(companyId: string) {
     ? await db
         .select({
           roleId: accessRoleAssignments.roleId,
-          membershipId: accessRoleAssignments.membershipId,
+          assignedCount: count(),
         })
         .from(accessRoleAssignments)
         .where(inArray(accessRoleAssignments.roleId, roleIds))
+        .groupBy(accessRoleAssignments.roleId)
     : [];
   return roles.map((role) => ({
     ...role,
-    assignedMembershipIds: assignments
-      .filter((item) => item.roleId === role.id)
-      .map((item) => item.membershipId),
+    assignedCount:
+      Number(
+        assignments.find((item) => item.roleId === role.id)?.assignedCount,
+      ) || 0,
   }));
 }
 
-export async function listAssignableMembers(companyId: string) {
-  return getDb()
+export async function listAssignableMembers(
+  companyId: string,
+  options: {
+    page?: number;
+    pageSize?: number;
+    search?: string;
+    roleId?: string | null;
+  } = {},
+) {
+  const db = getDb();
+  const pageSize = Math.min(Math.max(options.pageSize ?? 25, 1), 100);
+  const search = options.search?.trim().slice(0, 100) ?? "";
+  const searchFilter = search
+    ? or(
+        ilike(users.name, `%${search}%`),
+        ilike(users.email, `%${search}%`),
+        ilike(employeeProfiles.jobTitle, `%${search}%`),
+      )
+    : sql<boolean>`true`;
+  const membershipFilter = and(
+    eq(companyMemberships.companyId, companyId),
+    eq(companyMemberships.status, "active"),
+    inArray(companyMemberships.role, ["employee", "manager", "hr"]),
+    searchFilter,
+  );
+  const [totalRow] = await db
+    .select({ total: count() })
+    .from(companyMemberships)
+    .innerJoin(users, eq(companyMemberships.userId, users.id))
+    .leftJoin(
+      employeeProfiles,
+      eq(employeeProfiles.membershipId, companyMemberships.id),
+    )
+    .where(membershipFilter);
+  const total = Number(totalRow?.total ?? 0);
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const page = Math.min(Math.max(options.page ?? 1, 1), totalPages);
+  const members = await db
     .select({
       membershipId: companyMemberships.id,
       name: users.name,
@@ -53,14 +101,33 @@ export async function listAssignableMembers(companyId: string) {
       employeeProfiles,
       eq(employeeProfiles.membershipId, companyMemberships.id),
     )
-    .where(
-      and(
-        eq(companyMemberships.companyId, companyId),
-        eq(companyMemberships.status, "active"),
-        inArray(companyMemberships.role, ["employee", "manager", "hr"]),
-      ),
-    )
-    .orderBy(asc(users.name));
+    .where(membershipFilter)
+    .orderBy(asc(users.name))
+    .limit(pageSize)
+    .offset((page - 1) * pageSize);
+  const assignedIds =
+    options.roleId && members.length
+      ? await db
+          .select({ membershipId: accessRoleAssignments.membershipId })
+          .from(accessRoleAssignments)
+          .where(
+            and(
+              eq(accessRoleAssignments.roleId, options.roleId),
+              inArray(
+                accessRoleAssignments.membershipId,
+                members.map((member) => member.membershipId),
+              ),
+            ),
+          )
+      : [];
+  const assigned = new Set(assignedIds.map((item) => item.membershipId));
+  return {
+    members: members.map((member) => ({
+      ...member,
+      assigned: assigned.has(member.membershipId),
+    })),
+    pagination: { page, pageSize, total, totalPages },
+  };
 }
 
 export async function assignAccessRole(
