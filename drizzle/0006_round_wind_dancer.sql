@@ -1,0 +1,1 @@
+ALTER TABLE "crm_integration" ADD COLUMN "deleted_at" timestamp with time zone;

@@ -1,0 +1,17 @@
+.login-error {
+  border: 1px solid #f1b1b5;
+  background: #fff3f4;
+  color: #b43d45;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 11px;
+  margin: 0 0 15px;
+}
+.session-loader {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  color: #607381;
+  font-size: 13px;
+  background: var(--canvas);
+}

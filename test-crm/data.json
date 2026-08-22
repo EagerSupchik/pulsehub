@@ -1,0 +1,1481 @@
+{
+  "users": [
+    {
+      "id": "supchik-hr",
+      "name": "Анна Воронова",
+      "email": "hr@supchik.com"
+    },
+    {
+      "id": "supchik-sales-manager",
+      "name": "Дмитрий Соколов",
+      "email": "d.sokolov@supchik.com"
+    },
+    {
+      "id": "supchik-support-manager",
+      "name": "Мария Лебедева",
+      "email": "m.lebedeva@supchik.com"
+    },
+    {
+      "id": "supchik-development-manager",
+      "name": "Сергей Ким",
+      "email": "s.kim@supchik.com"
+    },
+    {
+      "id": "test-crm-user-1",
+      "name": "Анна Смирнова",
+      "email": "anna@supchik.com"
+    },
+    {
+      "id": "test-crm-user-2",
+      "name": "Иван Петров",
+      "email": "ivan@supchik.com"
+    },
+    {
+      "id": "supchik-ekaterina-orlova",
+      "name": "Екатерина Орлова",
+      "email": "e.orlova@supchik.com"
+    },
+    {
+      "id": "supchik-maxim-volkov",
+      "name": "Максим Волков",
+      "email": "m.volkov@supchik.com"
+    },
+    {
+      "id": "supchik-olga-romanova",
+      "name": "Ольга Романова",
+      "email": "o.romanova@supchik.com"
+    },
+    {
+      "id": "supchik-roman-fedorov",
+      "name": "Роман Фёдоров",
+      "email": "r.fedorov@supchik.com"
+    },
+    {
+      "id": "supchik-nikita-kozlov",
+      "name": "Никита Козлов",
+      "email": "n.kozlov@supchik.com"
+    },
+    {
+      "id": "supchik-staff-01",
+      "name": "Александр Белов",
+      "email": "staff01@supchik.com"
+    },
+    {
+      "id": "supchik-staff-02",
+      "name": "Елена Громова",
+      "email": "staff02@supchik.com"
+    },
+    {
+      "id": "supchik-staff-03",
+      "name": "Михаил Захаров",
+      "email": "staff03@supchik.com"
+    },
+    {
+      "id": "supchik-staff-04",
+      "name": "Дарья Исаева",
+      "email": "staff04@supchik.com"
+    },
+    {
+      "id": "supchik-staff-05",
+      "name": "Артём Карпов",
+      "email": "staff05@supchik.com"
+    },
+    {
+      "id": "supchik-staff-06",
+      "name": "София Ларионова",
+      "email": "staff06@supchik.com"
+    },
+    {
+      "id": "supchik-staff-07",
+      "name": "Павел Мельников",
+      "email": "staff07@supchik.com"
+    },
+    {
+      "id": "supchik-staff-08",
+      "name": "Виктория Николаева",
+      "email": "staff08@supchik.com"
+    },
+    {
+      "id": "supchik-staff-09",
+      "name": "Илья Осипов",
+      "email": "staff09@supchik.com"
+    },
+    {
+      "id": "supchik-staff-10",
+      "name": "Алина Панина",
+      "email": "staff10@supchik.com"
+    },
+    {
+      "id": "supchik-staff-11",
+      "name": "Денис Рыбаков",
+      "email": "staff11@supchik.com"
+    },
+    {
+      "id": "supchik-staff-12",
+      "name": "Наталья Савельева",
+      "email": "staff12@supchik.com"
+    },
+    {
+      "id": "supchik-staff-13",
+      "name": "Александр Титов",
+      "email": "staff13@supchik.com"
+    },
+    {
+      "id": "supchik-staff-14",
+      "name": "Елена Уварова",
+      "email": "staff14@supchik.com"
+    },
+    {
+      "id": "supchik-staff-15",
+      "name": "Михаил Фомин",
+      "email": "staff15@supchik.com"
+    },
+    {
+      "id": "supchik-staff-16",
+      "name": "Дарья Харитонова",
+      "email": "staff16@supchik.com"
+    },
+    {
+      "id": "supchik-staff-17",
+      "name": "Артём Цветков",
+      "email": "staff17@supchik.com"
+    },
+    {
+      "id": "supchik-staff-18",
+      "name": "София Чернова",
+      "email": "staff18@supchik.com"
+    },
+    {
+      "id": "supchik-staff-19",
+      "name": "Павел Широков",
+      "email": "staff19@supchik.com"
+    },
+    {
+      "id": "supchik-staff-20",
+      "name": "Виктория Яковлева",
+      "email": "staff20@supchik.com"
+    },
+    {
+      "id": "supchik-staff-21",
+      "name": "Илья Белов",
+      "email": "staff21@supchik.com"
+    },
+    {
+      "id": "supchik-staff-22",
+      "name": "Алина Громова",
+      "email": "staff22@supchik.com"
+    },
+    {
+      "id": "supchik-staff-23",
+      "name": "Денис Захаров",
+      "email": "staff23@supchik.com"
+    },
+    {
+      "id": "supchik-staff-24",
+      "name": "Наталья Исаева",
+      "email": "staff24@supchik.com"
+    },
+    {
+      "id": "supchik-staff-25",
+      "name": "Александр Карпов",
+      "email": "staff25@supchik.com"
+    },
+    {
+      "id": "supchik-staff-26",
+      "name": "Елена Ларионова",
+      "email": "staff26@supchik.com"
+    },
+    {
+      "id": "supchik-staff-27",
+      "name": "Михаил Мельников",
+      "email": "staff27@supchik.com"
+    },
+    {
+      "id": "supchik-staff-28",
+      "name": "Дарья Николаева",
+      "email": "staff28@supchik.com"
+    },
+    {
+      "id": "supchik-staff-29",
+      "name": "Артём Осипов",
+      "email": "staff29@supchik.com"
+    },
+    {
+      "id": "supchik-staff-30",
+      "name": "София Панина",
+      "email": "staff30@supchik.com"
+    },
+    {
+      "id": "supchik-staff-31",
+      "name": "Павел Рыбаков",
+      "email": "staff31@supchik.com"
+    },
+    {
+      "id": "supchik-staff-32",
+      "name": "Виктория Савельева",
+      "email": "staff32@supchik.com"
+    },
+    {
+      "id": "supchik-staff-33",
+      "name": "Илья Титов",
+      "email": "staff33@supchik.com"
+    },
+    {
+      "id": "supchik-staff-34",
+      "name": "Алина Уварова",
+      "email": "staff34@supchik.com"
+    },
+    {
+      "id": "supchik-staff-35",
+      "name": "Денис Фомин",
+      "email": "staff35@supchik.com"
+    },
+    {
+      "id": "supchik-staff-36",
+      "name": "Наталья Харитонова",
+      "email": "staff36@supchik.com"
+    },
+    {
+      "id": "supchik-staff-37",
+      "name": "Александр Цветков",
+      "email": "staff37@supchik.com"
+    },
+    {
+      "id": "supchik-staff-38",
+      "name": "Елена Чернова",
+      "email": "staff38@supchik.com"
+    },
+    {
+      "id": "supchik-staff-39",
+      "name": "Михаил Широков",
+      "email": "staff39@supchik.com"
+    },
+    {
+      "id": "supchik-staff-40",
+      "name": "Дарья Яковлева",
+      "email": "staff40@supchik.com"
+    },
+    {
+      "id": "supchik-staff-41",
+      "name": "Артём Белов",
+      "email": "staff41@supchik.com"
+    },
+    {
+      "id": "supchik-staff-42",
+      "name": "София Громова",
+      "email": "staff42@supchik.com"
+    },
+    {
+      "id": "supchik-staff-43",
+      "name": "Павел Захаров",
+      "email": "staff43@supchik.com"
+    },
+    {
+      "id": "supchik-staff-44",
+      "name": "Виктория Исаева",
+      "email": "staff44@supchik.com"
+    },
+    {
+      "id": "supchik-staff-45",
+      "name": "Илья Карпов",
+      "email": "staff45@supchik.com"
+    },
+    {
+      "id": "supchik-staff-46",
+      "name": "Алина Ларионова",
+      "email": "staff46@supchik.com"
+    },
+    {
+      "id": "supchik-staff-47",
+      "name": "Денис Мельников",
+      "email": "staff47@supchik.com"
+    },
+    {
+      "id": "supchik-staff-48",
+      "name": "Наталья Николаева",
+      "email": "staff48@supchik.com"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "SUP-OPEN-001",
+      "title": "Подготовить встречу по итогам испытательного срока",
+      "project": "HR",
+      "assigneeId": "supchik-hr",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-002",
+      "title": "Собрать обратную связь после адаптации",
+      "project": "HR",
+      "assigneeId": "supchik-hr",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-003",
+      "title": "Согласовать условия пилотного проекта",
+      "project": "Продажи",
+      "assigneeId": "supchik-sales-manager",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-004",
+      "title": "Подготовить отчёт по воронке продаж",
+      "project": "Продажи",
+      "assigneeId": "supchik-sales-manager",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-005",
+      "title": "Разобрать обращения с низкой оценкой CSAT",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-support-manager",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-006",
+      "title": "Обновить шаблоны ответов клиентам",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-support-manager",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-007",
+      "title": "Подготовить релиз модуля уведомлений",
+      "project": "Разработка",
+      "assigneeId": "supchik-development-manager",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-008",
+      "title": "Проверить мониторинг CRM-синхронизации",
+      "project": "Разработка",
+      "assigneeId": "supchik-development-manager",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-009",
+      "title": "Согласовать условия пилотного проекта",
+      "project": "Продажи",
+      "assigneeId": "test-crm-user-1",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-010",
+      "title": "Подготовить отчёт по воронке продаж",
+      "project": "Продажи",
+      "assigneeId": "test-crm-user-1",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-011",
+      "title": "Согласовать условия пилотного проекта",
+      "project": "Продажи",
+      "assigneeId": "test-crm-user-2",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-012",
+      "title": "Подготовить отчёт по воронке продаж",
+      "project": "Продажи",
+      "assigneeId": "test-crm-user-2",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-013",
+      "title": "Разобрать обращения с низкой оценкой CSAT",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-ekaterina-orlova",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-014",
+      "title": "Обновить шаблоны ответов клиентам",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-ekaterina-orlova",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-015",
+      "title": "Разобрать обращения с низкой оценкой CSAT",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-maxim-volkov",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-016",
+      "title": "Обновить шаблоны ответов клиентам",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-maxim-volkov",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-017",
+      "title": "Запустить кампанию для корпоративных клиентов",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-olga-romanova",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-018",
+      "title": "Подготовить кейс о результатах внедрения",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-olga-romanova",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-019",
+      "title": "Подготовить релиз модуля уведомлений",
+      "project": "Разработка",
+      "assigneeId": "supchik-roman-fedorov",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-020",
+      "title": "Проверить мониторинг CRM-синхронизации",
+      "project": "Разработка",
+      "assigneeId": "supchik-roman-fedorov",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-021",
+      "title": "Подготовить релиз модуля уведомлений",
+      "project": "Разработка",
+      "assigneeId": "supchik-nikita-kozlov",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-022",
+      "title": "Проверить мониторинг CRM-синхронизации",
+      "project": "Разработка",
+      "assigneeId": "supchik-nikita-kozlov",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-023",
+      "title": "Согласовать условия пилотного проекта",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-01",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-024",
+      "title": "Подготовить отчёт по воронке продаж",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-01",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-025",
+      "title": "Разобрать обращения с низкой оценкой CSAT",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-02",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-026",
+      "title": "Обновить шаблоны ответов клиентам",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-02",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-027",
+      "title": "Подготовить релиз модуля уведомлений",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-03",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-028",
+      "title": "Проверить мониторинг CRM-синхронизации",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-03",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-029",
+      "title": "Запустить кампанию для корпоративных клиентов",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-04",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-030",
+      "title": "Подготовить кейс о результатах внедрения",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-04",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-031",
+      "title": "Согласовать условия пилотного проекта",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-05",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-032",
+      "title": "Подготовить отчёт по воронке продаж",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-05",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-033",
+      "title": "Разобрать обращения с низкой оценкой CSAT",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-06",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-034",
+      "title": "Обновить шаблоны ответов клиентам",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-06",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-035",
+      "title": "Подготовить релиз модуля уведомлений",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-07",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-036",
+      "title": "Проверить мониторинг CRM-синхронизации",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-07",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-037",
+      "title": "Запустить кампанию для корпоративных клиентов",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-08",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-038",
+      "title": "Подготовить кейс о результатах внедрения",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-08",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-039",
+      "title": "Согласовать условия пилотного проекта",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-09",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-040",
+      "title": "Подготовить отчёт по воронке продаж",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-09",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-041",
+      "title": "Разобрать обращения с низкой оценкой CSAT",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-10",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-042",
+      "title": "Обновить шаблоны ответов клиентам",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-10",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-043",
+      "title": "Подготовить релиз модуля уведомлений",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-11",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-044",
+      "title": "Проверить мониторинг CRM-синхронизации",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-11",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-045",
+      "title": "Запустить кампанию для корпоративных клиентов",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-12",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-046",
+      "title": "Подготовить кейс о результатах внедрения",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-12",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-047",
+      "title": "Согласовать условия пилотного проекта",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-13",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-048",
+      "title": "Подготовить отчёт по воронке продаж",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-13",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-049",
+      "title": "Разобрать обращения с низкой оценкой CSAT",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-14",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-050",
+      "title": "Обновить шаблоны ответов клиентам",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-14",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-051",
+      "title": "Подготовить релиз модуля уведомлений",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-15",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-052",
+      "title": "Проверить мониторинг CRM-синхронизации",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-15",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-053",
+      "title": "Запустить кампанию для корпоративных клиентов",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-16",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-054",
+      "title": "Подготовить кейс о результатах внедрения",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-16",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-055",
+      "title": "Согласовать условия пилотного проекта",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-17",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-056",
+      "title": "Подготовить отчёт по воронке продаж",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-17",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-057",
+      "title": "Разобрать обращения с низкой оценкой CSAT",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-18",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-058",
+      "title": "Обновить шаблоны ответов клиентам",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-18",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-059",
+      "title": "Подготовить релиз модуля уведомлений",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-19",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-060",
+      "title": "Проверить мониторинг CRM-синхронизации",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-19",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-061",
+      "title": "Запустить кампанию для корпоративных клиентов",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-20",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-062",
+      "title": "Подготовить кейс о результатах внедрения",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-20",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-063",
+      "title": "Согласовать условия пилотного проекта",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-21",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-064",
+      "title": "Подготовить отчёт по воронке продаж",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-21",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-065",
+      "title": "Разобрать обращения с низкой оценкой CSAT",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-22",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-066",
+      "title": "Обновить шаблоны ответов клиентам",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-22",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-067",
+      "title": "Подготовить релиз модуля уведомлений",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-23",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-068",
+      "title": "Проверить мониторинг CRM-синхронизации",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-23",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-069",
+      "title": "Запустить кампанию для корпоративных клиентов",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-24",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-070",
+      "title": "Подготовить кейс о результатах внедрения",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-24",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-071",
+      "title": "Согласовать условия пилотного проекта",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-25",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-072",
+      "title": "Подготовить отчёт по воронке продаж",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-25",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-073",
+      "title": "Разобрать обращения с низкой оценкой CSAT",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-26",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-074",
+      "title": "Обновить шаблоны ответов клиентам",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-26",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-075",
+      "title": "Подготовить релиз модуля уведомлений",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-27",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-076",
+      "title": "Проверить мониторинг CRM-синхронизации",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-27",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-077",
+      "title": "Запустить кампанию для корпоративных клиентов",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-28",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-078",
+      "title": "Подготовить кейс о результатах внедрения",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-28",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-079",
+      "title": "Согласовать условия пилотного проекта",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-29",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-080",
+      "title": "Подготовить отчёт по воронке продаж",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-29",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-081",
+      "title": "Разобрать обращения с низкой оценкой CSAT",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-30",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-082",
+      "title": "Обновить шаблоны ответов клиентам",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-30",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-083",
+      "title": "Подготовить релиз модуля уведомлений",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-31",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-084",
+      "title": "Проверить мониторинг CRM-синхронизации",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-31",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-085",
+      "title": "Запустить кампанию для корпоративных клиентов",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-32",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-086",
+      "title": "Подготовить кейс о результатах внедрения",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-32",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-087",
+      "title": "Согласовать условия пилотного проекта",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-33",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-088",
+      "title": "Подготовить отчёт по воронке продаж",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-33",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-089",
+      "title": "Разобрать обращения с низкой оценкой CSAT",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-34",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-090",
+      "title": "Обновить шаблоны ответов клиентам",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-34",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-091",
+      "title": "Подготовить релиз модуля уведомлений",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-35",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-092",
+      "title": "Проверить мониторинг CRM-синхронизации",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-35",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-093",
+      "title": "Запустить кампанию для корпоративных клиентов",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-36",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-094",
+      "title": "Подготовить кейс о результатах внедрения",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-36",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-095",
+      "title": "Согласовать условия пилотного проекта",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-37",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-096",
+      "title": "Подготовить отчёт по воронке продаж",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-37",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-097",
+      "title": "Разобрать обращения с низкой оценкой CSAT",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-38",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-098",
+      "title": "Обновить шаблоны ответов клиентам",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-38",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-099",
+      "title": "Подготовить релиз модуля уведомлений",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-39",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-100",
+      "title": "Проверить мониторинг CRM-синхронизации",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-39",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-101",
+      "title": "Запустить кампанию для корпоративных клиентов",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-40",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-102",
+      "title": "Подготовить кейс о результатах внедрения",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-40",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-103",
+      "title": "Согласовать условия пилотного проекта",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-41",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-104",
+      "title": "Подготовить отчёт по воронке продаж",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-41",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-105",
+      "title": "Разобрать обращения с низкой оценкой CSAT",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-42",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-106",
+      "title": "Обновить шаблоны ответов клиентам",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-42",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-107",
+      "title": "Подготовить релиз модуля уведомлений",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-43",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-108",
+      "title": "Проверить мониторинг CRM-синхронизации",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-43",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-109",
+      "title": "Запустить кампанию для корпоративных клиентов",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-44",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-110",
+      "title": "Подготовить кейс о результатах внедрения",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-44",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-111",
+      "title": "Согласовать условия пилотного проекта",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-45",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-112",
+      "title": "Подготовить отчёт по воронке продаж",
+      "project": "Продажи",
+      "assigneeId": "supchik-staff-45",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-113",
+      "title": "Разобрать обращения с низкой оценкой CSAT",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-46",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-25T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-114",
+      "title": "Обновить шаблоны ответов клиентам",
+      "project": "Клиентский сервис",
+      "assigneeId": "supchik-staff-46",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-29T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-115",
+      "title": "Подготовить релиз модуля уведомлений",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-47",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-26T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-116",
+      "title": "Проверить мониторинг CRM-синхронизации",
+      "project": "Разработка",
+      "assigneeId": "supchik-staff-47",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-30T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-117",
+      "title": "Запустить кампанию для корпоративных клиентов",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-48",
+      "status": "progress",
+      "priority": "high",
+      "points": 250,
+      "dueAt": "2026-08-27T15:00:00.000Z"
+    },
+    {
+      "id": "SUP-OPEN-118",
+      "title": "Подготовить кейс о результатах внедрения",
+      "project": "Маркетинг",
+      "assigneeId": "supchik-staff-48",
+      "status": "new",
+      "priority": "medium",
+      "points": 140,
+      "dueAt": "2026-08-31T15:00:00.000Z"
+    }
+  ]
+}
