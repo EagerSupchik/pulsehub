@@ -36,6 +36,12 @@ const paths: Record<string, React.ReactNode> = {
       <path d="M4 19V9M10 19V5M16 19v-7M22 19H2" />
     </>
   ),
+  personality: (
+    <>
+      <path d="M12 3a7 7 0 0 0-7 7c0 2.6 1.4 4.8 3.5 6v4h7v-4A7 7 0 0 0 12 3Z" />
+      <path d="M9 10h.01M15 10h.01M9.5 13.5c1.5 1 3.5 1 5 0" />
+    </>
+  ),
   people: (
     <>
       <circle cx="9" cy="8" r="3" />

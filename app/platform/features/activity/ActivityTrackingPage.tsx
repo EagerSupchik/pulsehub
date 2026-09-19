@@ -318,10 +318,6 @@ export function ActivityTrackingPage({
             <div className="employee-section-head">
               <div>
                 <h2>{levelNames[level]}</h2>
-                <p>
-                  Показатели основаны на журнале начислений и синхронизированных
-                  CRM-задачах.
-                </p>
               </div>
               <div className="employee-list-tools">
                 <label className="employee-search">
@@ -349,6 +345,17 @@ export function ActivityTrackingPage({
                   <div className="employee-name">
                     <h3>{employee.name}</h3>
                     <p>{employee.position}</p>
+                    {employee.personalityStyle && (
+                      <small className="work-style-chip">
+                        {{
+                          explorer: "Исследователь",
+                          organizer: "Организатор",
+                          connector: "Коммуникатор",
+                          supporter: "Партнёр",
+                          stabilizer: "Стабилизатор",
+                        }[employee.personalityStyle] ?? employee.personalityStyle}
+                      </small>
+                    )}
                   </div>
                   <div className="employee-metric">
                     <span>Индекс</span>

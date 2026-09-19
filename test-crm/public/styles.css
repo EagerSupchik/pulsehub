@@ -96,7 +96,7 @@ select {
 
 .task {
   display: grid;
-  grid-template-columns: minmax(240px, 1fr) 130px 130px 100px auto;
+  grid-template-columns: minmax(220px, 1fr) 120px 130px 160px 90px auto;
   gap: 12px;
   align-items: center;
   border-top: 1px solid #e7ebee;

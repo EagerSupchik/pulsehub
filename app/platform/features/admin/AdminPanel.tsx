@@ -525,7 +525,7 @@ function RolesPanel({ notify }: { notify: Notify }) {
   const copyCredentials = async () => {
     if (!createdCredentials) return;
     await navigator.clipboard.writeText(
-      `PulseHub\nЛогин: ${createdCredentials.email}\nПароль: ${createdCredentials.password}`,
+      `PulseHub\nЛогин: ${createdCredentials.email}\nВременный пароль: ${createdCredentials.password}`,
     );
     notify("Данные для входа скопированы");
   };
@@ -544,7 +544,7 @@ function RolesPanel({ notify }: { notify: Notify }) {
           <code>
             Логин: {createdCredentials.email}
             <br />
-            Пароль: {createdCredentials.password}
+            Временный пароль: {createdCredentials.password}
           </code>
           <button type="button" onClick={() => void copyCredentials()}>
             Копировать
@@ -757,7 +757,7 @@ function RolesPanel({ notify }: { notify: Notify }) {
             </select>
           </label>
           <label>
-            Пароль
+            Временный пароль
             <div className="password-admin-field">
               <input
                 minLength={10}
@@ -1189,8 +1189,9 @@ function CrmPanel({ notify }: { notify: Notify }) {
               value={provider}
               onChange={(e) => setProvider(e.target.value)}
             >
+              <option value="test-crm">Локальная тестовая CRM</option>
               <option value="amocrm">amoCRM</option>
-              <option value="custom">Другая CRM / Кастомная API</option>
+              <option value="custom">Другая CRM / Custom API</option>
             </select>
           </label>
           <label>

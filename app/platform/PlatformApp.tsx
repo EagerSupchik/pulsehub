@@ -19,6 +19,7 @@ import { StorePage } from "./features/store/StorePage";
 import { AssistantPage } from "./features/assistant/AssistantPage";
 import { ActivityTrackingPage } from "./features/activity/ActivityTrackingPage";
 import { AdminPanel } from "./features/admin/AdminPanel";
+import { PersonalityPage } from "./features/personality/PersonalityPage";
 
 function accountToUser(account: CurrentAccountResponse): User {
   const initials = account.user.name
@@ -254,6 +255,7 @@ export function PlatformApp() {
         <StorePage wallet={wallet} rewards={rewards} buy={buyReward} />
       )}
       {page === "career" && <AssistantPage />}
+      {page === "personality" && <PersonalityPage notify={notify} />}
       {page === "activity" &&
         (["manager", "hr", "admin"].includes(user.role) ||
           user.capabilities.includes("activity.company.read")) && (

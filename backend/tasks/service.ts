@@ -6,6 +6,7 @@ import {
   desc,
   eq,
   ilike,
+  inArray,
   isNull,
   or,
   sql,
@@ -17,12 +18,14 @@ import {
   crmUserMappings,
   employeeProfiles,
   pointLedger,
+  personalityProfiles,
   tasks,
   taskStatusHistory,
   users,
 } from "@/db/schema";
 import { z } from "zod";
 import { crmSyncSchema } from "./schemas";
+import { calculatePersonalityBonus } from "@/backend/personality/service";
 
 type SyncInput = z.infer<typeof crmSyncSchema>;
 
@@ -34,6 +37,10 @@ const pullTaskSchema = z.object({
   project: z.string().max(255).nullable().optional(),
   status: z.enum(["new", "progress", "done", "cancelled"]),
   priority: z.enum(["low", "medium", "high"]).default("medium"),
+  workStyle: z
+    .enum(["explorer", "organizer", "connector", "supporter", "stabilizer"])
+    .nullable()
+    .optional(),
   points: z.number().int().min(0).max(100_000).optional(),
   dueAt: z.iso.datetime({ offset: true }).nullable().optional(),
   completedAt: z.iso.datetime({ offset: true }).nullable().optional(),
@@ -300,6 +307,9 @@ export async function listMemberTasks(companyId: string, membershipId: string) {
       sourceStatus: tasks.sourceStatus,
       status: tasks.status,
       priority: tasks.priority,
+      workStyle: tasks.workStyle,
+      basePoints: tasks.basePoints,
+      personalityBonus: tasks.personalityBonus,
       points: tasks.points,
       dueAt: tasks.dueAt,
       completedAt: tasks.completedAt,
@@ -379,6 +389,7 @@ export async function pullCrmTasksOnDemand(companyId: string) {
             sourceStatus: sourceStatuses[task.status],
             status: task.status,
             priority: task.priority,
+            workStyle: task.workStyle ?? null,
             points: task.points,
             dueAt: task.dueAt ?? null,
             completedAt: task.completedAt ?? null,
@@ -401,12 +412,24 @@ async function awardTaskPoints(
     id: string;
     companyId: string;
     assignedMembershipId: string | null;
+    basePoints: number;
+    workStyle: string | null;
     points: number;
     externalId: string;
   },
   observedAt: Date,
+  personalityProfile: Pick<
+    typeof personalityProfiles.$inferSelect,
+    "openness" | "conscientiousness" | "extraversion" | "agreeableness" | "emotionalStability"
+  > | null,
 ) {
-  if (!task.assignedMembershipId || task.points <= 0) return false;
+  if (!task.assignedMembershipId || task.basePoints <= 0) return 0;
+  const personalization = calculatePersonalityBonus(
+    personalityProfile,
+    task.basePoints,
+    task.workStyle,
+  );
+  const awardedPoints = task.basePoints + personalization.bonus;
   const inserted = await tx
     .insert(pointLedger)
     .values({
@@ -414,27 +437,37 @@ async function awardTaskPoints(
       companyId: task.companyId,
       membershipId: task.assignedMembershipId,
       taskId: task.id,
-      amount: task.points,
+      amount: awardedPoints,
       idempotencyKey: `task-completed:${task.id}`,
-      metadata: { externalTaskId: task.externalId },
+      metadata: {
+        externalTaskId: task.externalId,
+        basePoints: task.basePoints,
+        personalityBonus: personalization.bonus,
+        personalityBonusRate: personalization.rate,
+        workStyle: personalization.style,
+      },
       createdAt: observedAt,
     })
     .onConflictDoNothing({ target: pointLedger.idempotencyKey })
     .returning({ id: pointLedger.id });
-  if (!inserted[0]) return false;
+  if (!inserted[0]) return 0;
   await tx
     .update(employeeProfiles)
     .set({
-      activityPoints: sql`${employeeProfiles.activityPoints} + ${task.points}`,
-      walletPoints: sql`${employeeProfiles.walletPoints} + ${task.points}`,
+      activityPoints: sql`${employeeProfiles.activityPoints} + ${awardedPoints}`,
+      walletPoints: sql`${employeeProfiles.walletPoints} + ${awardedPoints}`,
       updatedAt: observedAt,
     })
     .where(eq(employeeProfiles.membershipId, task.assignedMembershipId));
   await tx
     .update(tasks)
-    .set({ pointsAwardedAt: observedAt })
+    .set({
+      points: awardedPoints,
+      personalityBonus: personalization.bonus,
+      pointsAwardedAt: observedAt,
+    })
     .where(eq(tasks.id, task.id));
-  return true;
+  return awardedPoints;
 }
 
 export async function syncCrmTasks(integrationId: string, input: SyncInput) {
@@ -478,6 +511,16 @@ export async function syncCrmTasks(integrationId: string, input: SyncInput) {
     );
   const membershipByExternalId = new Map(
     mappings.map((mapping) => [mapping.externalUserId, mapping.membershipId]),
+  );
+  const membershipIds = [...new Set(mappings.map((mapping) => mapping.membershipId))];
+  const personalityRows = membershipIds.length
+    ? await db
+        .select()
+        .from(personalityProfiles)
+        .where(inArray(personalityProfiles.membershipId, membershipIds))
+    : [];
+  const personalityByMembershipId = new Map(
+    personalityRows.map((profile) => [profile.membershipId, profile]),
   );
   const observedAt = input.observedAt ? new Date(input.observedAt) : new Date();
   const configuredPoints = (
@@ -528,11 +571,20 @@ export async function syncCrmTasks(integrationId: string, input: SyncInput) {
         sourceStatus: incoming.sourceStatus,
         status: incoming.status,
         priority: incoming.priority,
-        points:
+        workStyle: incoming.workStyle ?? null,
+        basePoints:
           incoming.points ??
+          existing?.basePoints ??
           existing?.points ??
           configuredPoints?.[incoming.priority] ??
           integration.defaultPoints,
+        points: existing?.pointsAwardedAt
+          ? existing.points
+          : incoming.points ??
+            existing?.basePoints ??
+            existing?.points ??
+            configuredPoints?.[incoming.priority] ??
+            integration.defaultPoints,
         dueAt: incoming.dueAt ? new Date(incoming.dueAt) : null,
         completedAt,
         lastSyncedAt: observedAt,
@@ -573,8 +625,15 @@ export async function syncCrmTasks(integrationId: string, input: SyncInput) {
       }
       if (incoming.status === "done") {
         if (!existing || existing.status !== "done") summary.completed += 1;
-        if (await awardTaskPoints(tx, persisted, observedAt))
-          summary.pointsAwarded += persisted.points;
+        const awarded = await awardTaskPoints(
+          tx,
+          persisted,
+          observedAt,
+          persisted.assignedMembershipId
+            ? (personalityByMembershipId.get(persisted.assignedMembershipId) ?? null)
+            : null,
+        );
+        summary.pointsAwarded += awarded;
       }
     }
     await tx

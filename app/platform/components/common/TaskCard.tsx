@@ -38,21 +38,9 @@ export function TaskCard({ task, index }: { task: Task; index: number }) {
           <span className={`status ${task.status}`}>{labels[task.status]}</span>
           <span>{formatTaskDate(task)}</span>
         </div>
-        <div className="task-sync-note">
-          <span>
-            {task.sourceName ?? "CRM"} ·{" "}
-            {task.sourceStatus ?? "синхронизировано"}
-          </span>
-          <span>
-            {task.status === "done"
-              ? task.points === 0
-                ? "Без начисления"
-                : task.pointsAwardedAt
-                  ? "Баллы начислены"
-                  : "Начисление проверяется"
-              : "Статус изменяется в CRM"}
-          </span>
-        </div>
+        {Boolean(task.personalityBonus) && (
+          <div className="task-bonus">Персональный бонус +{task.personalityBonus}</div>
+        )}
       </div>
       {task.sourceUrl && (
         <span className="task-source-link" title="Открыть задачу в CRM">

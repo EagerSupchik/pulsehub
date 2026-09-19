@@ -37,6 +37,10 @@ export const syncedTaskSchema = z.object({
   sourceStatus: z.string().trim().min(1).max(100),
   status: z.enum(["new", "progress", "done", "cancelled"]),
   priority: z.enum(["low", "medium", "high"]).default("medium"),
+  workStyle: z
+    .enum(["explorer", "organizer", "connector", "supporter", "stabilizer"])
+    .nullable()
+    .optional(),
   points: z.number().int().min(0).max(100_000).optional(),
   dueAt: z.iso.datetime({ offset: true }).nullable().optional(),
   completedAt: z.iso.datetime({ offset: true }).nullable().optional(),

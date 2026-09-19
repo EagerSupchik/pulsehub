@@ -5,6 +5,7 @@ const employeeNavigation: NavItem[] = [
   { id: "tasks", label: "Задачи", icon: "tasks" },
   { id: "events", label: "Мероприятия", icon: "events" },
   { id: "store", label: "Магазин бонусов", icon: "store" },
+  { id: "personality", label: "Мой стиль работы", icon: "personality" },
   { id: "career", label: "AI Карьера", icon: "career" },
 ];
 

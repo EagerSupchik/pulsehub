@@ -67,6 +67,7 @@ const server = createServer(async (request, response) => {
         assigneeId: String(input.assigneeId || state.users[0]?.id || ""),
         status: "new",
         priority: input.priority || "medium",
+        workStyle: input.workStyle || null,
         points: Math.max(0, Number(input.points) || 0),
         dueAt: input.dueAt || null,
       };
@@ -88,6 +89,7 @@ const server = createServer(async (request, response) => {
         "assigneeId",
         "status",
         "priority",
+        "workStyle",
         "dueAt",
       ])
         if (key in input) task[key] = input[key];

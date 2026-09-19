@@ -127,7 +127,7 @@ const memberDefinitions = [
   {
     key: "admin",
     name: "Алексей Морозов",
-    email: "admin@supchik.com",
+    email: "admin@supchik.example",
     role: "admin",
     department: "administration",
     jobTitle: "Системный администратор",
@@ -135,7 +135,7 @@ const memberDefinitions = [
   {
     key: "hr",
     name: "Анна Воронова",
-    email: "hr@supchik.com",
+    email: "hr@supchik.example",
     role: "hr",
     department: "hr",
     jobTitle: "HR business partner",
@@ -143,7 +143,7 @@ const memberDefinitions = [
   {
     key: "sales-manager",
     name: "Дмитрий Соколов",
-    email: "d.sokolov@supchik.com",
+    email: "d.sokolov@supchik.example",
     role: "manager",
     department: "sales",
     jobTitle: "Руководитель отдела продаж",
@@ -151,7 +151,7 @@ const memberDefinitions = [
   {
     key: "support-manager",
     name: "Мария Лебедева",
-    email: "m.lebedeva@supchik.com",
+    email: "m.lebedeva@supchik.example",
     role: "manager",
     department: "support",
     jobTitle: "Руководитель клиентского сервиса",
@@ -159,7 +159,7 @@ const memberDefinitions = [
   {
     key: "development-manager",
     name: "Сергей Ким",
-    email: "s.kim@supchik.com",
+    email: "s.kim@supchik.example",
     role: "manager",
     department: "development",
     jobTitle: "Руководитель разработки",
@@ -167,7 +167,7 @@ const memberDefinitions = [
   {
     key: "anna-smirnova",
     name: "Анна Смирнова",
-    email: "anna@supchik.com",
+    email: "anna@supchik.example",
     role: "employee",
     department: "sales",
     jobTitle: "Менеджер по работе с ключевыми клиентами",
@@ -175,7 +175,7 @@ const memberDefinitions = [
   {
     key: "ivan-petrov",
     name: "Иван Петров",
-    email: "ivan@supchik.com",
+    email: "ivan@supchik.example",
     role: "employee",
     department: "sales",
     jobTitle: "Менеджер по продажам",
@@ -183,7 +183,7 @@ const memberDefinitions = [
   {
     key: "ekaterina-orlova",
     name: "Екатерина Орлова",
-    email: "e.orlova@supchik.com",
+    email: "e.orlova@supchik.example",
     role: "employee",
     department: "support",
     jobTitle: "Специалист клиентского сервиса",
@@ -191,7 +191,7 @@ const memberDefinitions = [
   {
     key: "maxim-volkov",
     name: "Максим Волков",
-    email: "m.volkov@supchik.com",
+    email: "m.volkov@supchik.example",
     role: "employee",
     department: "support",
     jobTitle: "Специалист технической поддержки",
@@ -199,7 +199,7 @@ const memberDefinitions = [
   {
     key: "olga-romanova",
     name: "Ольга Романова",
-    email: "o.romanova@supchik.com",
+    email: "o.romanova@supchik.example",
     role: "employee",
     department: "marketing",
     jobTitle: "Маркетолог",
@@ -207,7 +207,7 @@ const memberDefinitions = [
   {
     key: "roman-fedorov",
     name: "Роман Фёдоров",
-    email: "r.fedorov@supchik.com",
+    email: "r.fedorov@supchik.example",
     role: "employee",
     department: "development",
     jobTitle: "Backend-разработчик",
@@ -215,7 +215,7 @@ const memberDefinitions = [
   {
     key: "nikita-kozlov",
     name: "Никита Козлов",
-    email: "n.kozlov@supchik.com",
+    email: "n.kozlov@supchik.example",
     role: "employee",
     department: "development",
     jobTitle: "Junior frontend-разработчик",
@@ -294,7 +294,7 @@ const generatedMembers = Array.from({ length: 48 }, (_, index) => {
   return {
     key: `staff-${String(sequence).padStart(2, "0")}`,
     name: `${generatedFirstNames[index % generatedFirstNames.length]} ${generatedLastNames[index % generatedLastNames.length]}`,
-    email: `staff${String(sequence).padStart(2, "0")}@supchik.com`,
+    email: `staff${String(sequence).padStart(2, "0")}@supchik.example`,
     role: "employee",
     department,
     jobTitle:
@@ -701,6 +701,34 @@ const memberByKey = new Map(
   ]),
 );
 
+const personalityStyles = [
+  "explorer",
+  "organizer",
+  "connector",
+  "supporter",
+  "stabilizer",
+];
+
+function seededPersonality(index) {
+  const primaryStyle = personalityStyles[index % personalityStyles.length];
+  const scores = {
+    openness: 48 + ((index * 7) % 30),
+    conscientiousness: 50 + ((index * 11) % 28),
+    extraversion: 44 + ((index * 13) % 34),
+    agreeableness: 52 + ((index * 5) % 27),
+    emotionalStability: 49 + ((index * 9) % 29),
+  };
+  const scoreByStyle = {
+    explorer: "openness",
+    organizer: "conscientiousness",
+    connector: "extraversion",
+    supporter: "agreeableness",
+    stabilizer: "emotionalStability",
+  };
+  scores[scoreByStyle[primaryStyle]] = 78 + (index % 13);
+  return { primaryStyle, scores };
+}
+
 memberByKey.get("anna-smirnova").externalUserId = "test-crm-user-1";
 memberByKey.get("ivan-petrov").externalUserId = "test-crm-user-2";
 
@@ -822,7 +850,7 @@ async function seedDatabase() {
       `;
     }
 
-    for (const member of memberByKey.values()) {
+    for (const [memberIndex, member] of [...memberByKey.values()].entries()) {
       const department = departmentByKey.get(member.department);
 
       await tx`
@@ -908,6 +936,49 @@ async function seedDatabase() {
           ${now}
         )
       `;
+
+      if (member.role !== "admin") {
+        const personality = seededPersonality(memberIndex);
+        const answers = Object.fromEntries(
+          ["o1", "o2", "o3", "c1", "c2", "c3", "e1", "e2", "e3", "a1", "a2", "a3", "s1", "s2", "s3"]
+            .map((key, answerIndex) => [key, 2 + ((memberIndex + answerIndex) % 4)]),
+        );
+        await tx`
+          insert into personality_profile (
+            id,
+            membership_id,
+            assessment_version,
+            answers,
+            openness,
+            conscientiousness,
+            extraversion,
+            agreeableness,
+            emotional_stability,
+            primary_style,
+            share_with_managers,
+            consented_at,
+            completed_at,
+            created_at,
+            updated_at
+          ) values (
+            ${stableId("personality", member.key)},
+            ${member.membershipId},
+            1,
+            ${JSON.stringify(answers)}::jsonb,
+            ${personality.scores.openness},
+            ${personality.scores.conscientiousness},
+            ${personality.scores.extraversion},
+            ${personality.scores.agreeableness},
+            ${personality.scores.emotionalStability},
+            ${personality.primaryStyle},
+            ${memberIndex % 4 !== 0},
+            ${daysFromNow(-30)},
+            ${daysFromNow(-30)},
+            ${daysFromNow(-30)},
+            ${now}
+          )
+        `;
+      }
     }
 
     for (const role of accessRoleDefinitions) {
@@ -996,7 +1067,7 @@ async function seedDatabase() {
         ${companyId},
         true,
         'SupchikCompany',
-        'hr@supchik.com',
+        'hr@supchik.example',
         true,
         true,
         true,
@@ -1004,8 +1075,8 @@ async function seedDatabase() {
         true,
         1,
         ${JSON.stringify([
-          "hr@supchik.com",
-          "admin@supchik.com",
+          "hr@supchik.example",
+          "admin@supchik.example",
         ])}::jsonb,
         ${adminMembershipId},
         ${daysFromNow(-90)},
@@ -1157,6 +1228,12 @@ async function seedDatabase() {
           const title = titles[(completedTaskCounter + memberIndex) % titles.length];
           const priority =
             points >= 220 ? "high" : points >= 140 ? "medium" : "low";
+          const personality = seededPersonality(memberIndex);
+          const workStyle = personalityStyles[(memberIndex + index) % personalityStyles.length];
+          const personalityBonus = workStyle === personality.primaryStyle
+            ? Math.round(points * 0.1)
+            : 0;
+          const awardedPoints = points + personalityBonus;
 
           await tx`
             insert into task (
@@ -1173,6 +1250,9 @@ async function seedDatabase() {
               source_status,
               status,
               priority,
+              work_style,
+              base_points,
+              personality_bonus,
               points,
               due_at,
               completed_at,
@@ -1195,7 +1275,10 @@ async function seedDatabase() {
               'COMPLETED',
               'done',
               ${priority},
+              ${workStyle},
               ${points},
+              ${personalityBonus},
+              ${awardedPoints},
               ${addHours(completedAt, 8)},
               ${completedAt},
               ${completedAt},
@@ -1261,12 +1344,15 @@ async function seedDatabase() {
               ${companyId},
               ${member.membershipId},
               ${taskId},
-              ${points},
+              ${awardedPoints},
               'task_completed',
               ${`task-completed:${taskId}`},
               false,
               ${JSON.stringify({
                 externalTaskId: externalId,
+                basePoints: points,
+                personalityBonus,
+                workStyle,
                 seeded: true,
               })}::jsonb,
               ${completedAt}
@@ -1275,7 +1361,7 @@ async function seedDatabase() {
 
           profileTotals.set(
             member.key,
-            profileTotals.get(member.key) + points,
+            profileTotals.get(member.key) + awardedPoints,
           );
         }
       }
@@ -1299,6 +1385,7 @@ async function seedDatabase() {
         const status = openStatuses[index % openStatuses.length];
         const priority = index === 0 ? "high" : "medium";
         const points = priority === "high" ? 250 : 140;
+        const workStyle = personalityStyles[(memberIndex + index) % personalityStyles.length];
 
         await tx`
           insert into task (
@@ -1315,6 +1402,9 @@ async function seedDatabase() {
             source_status,
             status,
             priority,
+            work_style,
+            base_points,
+            personality_bonus,
             points,
             due_at,
             completed_at,
@@ -1337,6 +1427,9 @@ async function seedDatabase() {
             ${status === "progress" ? "IN_PROGRESS" : "OPEN"},
             ${status},
             ${priority},
+            ${workStyle},
+            ${points},
+            0,
             ${points},
             ${dueAt},
             null,
@@ -1374,6 +1467,7 @@ async function seedDatabase() {
           status,
           priority,
           points,
+          workStyle,
           dueAt: dueAt.toISOString(),
         });
       }
@@ -1618,13 +1712,13 @@ try {
     console.log(`Bonuses: ${bonusDefinitions.length}`);
     console.log("");
     console.log("Login credentials:");
-    console.log(`  Admin: admin@supchik.com / ${seedConfig.password}`);
-    console.log(`  HR: hr@supchik.com / ${seedConfig.password}`);
+    console.log(`  Admin: admin@supchik.example / ${seedConfig.password}`);
+    console.log(`  HR: hr@supchik.example / ${seedConfig.password}`);
     console.log(
-      `  Manager: d.sokolov@supchik.com / ${seedConfig.password}`,
+      `  Manager: d.sokolov@supchik.example / ${seedConfig.password}`,
     );
     console.log(
-      `  Employee: anna@supchik.com / ${seedConfig.password}`,
+      `  Employee: anna@supchik.example / ${seedConfig.password}`,
     );
     console.log("Test CRM data has been written automatically.");
 

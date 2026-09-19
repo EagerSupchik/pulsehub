@@ -34,6 +34,7 @@ function render() {
       const selected = (value) => (task.status === value ? "selected" : "");
       const selectedPriority = (value) =>
         task.priority === value ? "selected" : "";
+      const selectedStyle = (value) => task.workStyle === value ? "selected" : "";
 
       return `
         <article class="task" id="${task.id}">
@@ -57,6 +58,17 @@ function render() {
               <option value="low" ${selectedPriority("low")}>Низкий</option>
               <option value="medium" ${selectedPriority("medium")}>Средний</option>
               <option value="high" ${selectedPriority("high")}>Высокий</option>
+            </select>
+          </label>
+          <label>
+            Формат задачи
+            <select data-id="${task.id}" data-field="workStyle">
+              <option value="">Без персонализации</option>
+              <option value="explorer" ${selectedStyle("explorer")}>Новые решения</option>
+              <option value="organizer" ${selectedStyle("organizer")}>Структура и точность</option>
+              <option value="connector" ${selectedStyle("connector")}>Коммуникация</option>
+              <option value="supporter" ${selectedStyle("supporter")}>Командная поддержка</option>
+              <option value="stabilizer" ${selectedStyle("stabilizer")}>Работа с изменениями</option>
             </select>
           </label>
           <label>
@@ -102,6 +114,7 @@ $("#createForm").onsubmit = async (event) => {
   event.preventDefault();
   const values = Object.fromEntries(new FormData(event.currentTarget));
   values.points = Number(values.points);
+  values.workStyle ||= null;
   await request("/api/tasks", { method: "POST", body: JSON.stringify(values) });
   $("#createDialog").close();
   event.currentTarget.reset();

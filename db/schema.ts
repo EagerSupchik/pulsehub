@@ -7,3 +7,4 @@ export * from "./schema/events";
 export * from "./schema/activity";
 export * from "./schema/admin";
 export * from "./schema/store";
+export * from "./schema/personality";

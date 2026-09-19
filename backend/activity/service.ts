@@ -13,6 +13,7 @@ type ActivityRow = {
   taskCount: number | string;
   lifetimeTaskCount: number | string;
   lastActiveAt: Date | string | null;
+  personalityStyle: string | null;
 };
 
 type ActivityFilters = {
@@ -93,12 +94,14 @@ export async function getActivityTracking(
       coalesce(tt.task_count, 0) as "taskCount",
       coalesce(tt.lifetime_task_count, 0) as "lifetimeTaskCount",
       tt.last_active_at as "lastActiveAt"
+      ,case when pp.share_with_managers = true then pp.primary_style else null end as "personalityStyle"
     from company_membership cm
     join "user" u on u.id = cm.user_id
     join employee_profile ep on ep.membership_id = cm.id
     join department d on d.id = ep.department_id
     left join point_totals pt on pt.membership_id = cm.id
     left join task_totals tt on tt.assigned_membership_id = cm.id
+    left join personality_profile pp on pp.membership_id = cm.id
     where cm.company_id = ${companyId} and cm.status = 'active' ${departmentScope}
     order by d.name, u.name
   `);
@@ -140,6 +143,7 @@ export async function getActivityTracking(
         ? new Date(row.lastActiveAt).toISOString()
         : null,
       insight: insight(score, delta, Number(row.taskCount), lifetimeTasks),
+      personalityStyle: row.personalityStyle,
     };
   });
 

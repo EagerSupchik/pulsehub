@@ -6,6 +6,7 @@ export type PageId =
   | "events"
   | "store"
   | "career"
+  | "personality"
   | "activity"
   | "admin_roles"
   | "admin_crm"
@@ -69,6 +70,9 @@ export interface Task {
   points: number;
   status: "new" | "progress" | "done" | "cancelled";
   priority: "high" | "medium" | "low";
+  workStyle?: "explorer" | "organizer" | "connector" | "supporter" | "stabilizer" | null;
+  basePoints?: number;
+  personalityBonus?: number;
 }
 
 export interface EventItem {
@@ -108,6 +112,7 @@ export interface Employee {
   tasks: number;
   lastActiveAt: string | null;
   insight: string;
+  personalityStyle: string | null;
 }
 
 export interface ActivityTrackingResponse {
